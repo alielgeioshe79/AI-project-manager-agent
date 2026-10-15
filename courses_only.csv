@@ -1,0 +1,11 @@
+Course ID,Course Name,Level,Duration (Weeks),Price (USD),Topics,Prerequisites,Max Capacity,Resource Links
+DS101,Introduction to Data Science,Beginner,6,150,"Python, Pandas, NumPy, Exploratory Data Analysis",Basic Math & Logic,30,https://amit-learning.com/resources/ds101
+DS102,Data Analysis & Visualization,Intermediate,8,200,"SQL, Tableau, Power BI, Advanced Visualization",DS101 or Basic Python,25,https://amit-learning.com/resources/ds102
+ML201,Machine Learning Fundamentals,Intermediate,10,300,"Supervised Learning, Regression, Classification, Scikit-Learn",Python & Linear Algebra,25,https://amit-learning.com/resources/ml201
+ML202,Advanced Machine Learning & MLOps,Advanced,10,400,"Model Deployment, Docker, MLflow, Feature Stores",ML201 & Python,20,https://amit-learning.com/resources/ml202
+DL301,Deep Learning & Neural Networks,Advanced,12,450,"CNNs, RNNs, PyTorch, TensorFlow, Transformers",ML201 & Deep Learning Math,20,https://amit-learning.com/resources/dl301
+AI401,AI Automation Workflows,Intermediate,6,250,"n8n Automation, LLM Integration, RAG Systems, Vector Databases",Basic Python & API Knowledge,25,https://amit-learning.com/resources/ai401
+AI402,LLM Application Development,Advanced,8,350,"LangChain, LlamaIndex, Agentic Workflows, Prompt Engineering",AI401 & Python,20,https://amit-learning.com/resources/ai402
+NLP202,Natural Language Processing,Intermediate,8,300,"Text Processing, Transformers, Gemini API, Embeddings",Python & Machine Learning,25,https://amit-learning.com/resources/nlp202
+CV203,Computer Vision Essentials,Intermediate,8,300,"OpenCV, Image Segmentation, Object Detection, YOLO",Python & Matrix Operations,25,https://amit-learning.com/resources/cv203
+DE101,Data Engineering Foundations,Beginner,10,280,"ETL Pipelines, Apache Spark, Data Warehousing, SQL & NoSQL",Basic Programming & Database Concepts,30,https://amit-learning.com/resources/de101
