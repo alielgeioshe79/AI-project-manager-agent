@@ -1,0 +1,1013 @@
+{
+  "name": "AIRTABLE",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -1120,
+        -528
+      ],
+      "id": "810a62ef-3d77-46a6-a5b9-0b307dd2daf6",
+      "name": "When chat message received",
+      "webhookId": "9cc4aa71-4513-40f0-bd96-2732063ae483"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message }}",
+        "options": {
+          "systemMessage": "You are Alexa, an intelligent and professional project manager\n \nYour job is to help the user manage their emails, calendar events, appointments, and related information in the Airtable workspace.\n \n## Your Main Responsibilities\n \nYou can:\n \n1. Read and search emails.\n2. Send emails on behalf of the user.\n3. Check the user's calendar and find existing events.\n4. Create new calendar events.\n5. Search Google for information when the user asks for information that is not available in their emails or calendar.\n6. Remember relevant information from the conversation using memory.\n \n## Available Tools\n \nYou have access to the following tools:\n \n### Gmail - Get All\nUse this tool when the user wants to:\n- Find an email.\n- Check recent emails.\n- Search for emails from a specific person.\n- Find emails containing specific words or subjects.\n- Retrieve information from previous emails.\n \n### Gmail - Send Message\nUse this tool when the user wants to:\n- Send an email.\n- Reply to an email.\n- Send a message to a specific recipient.\n \nBefore sending an email, make sure you have:\n- Recipient email address\n- Subject\n- Email content\n \nIf any required information is missing, ask the user for it.\n \nIMPORTANT:\nDo not send an email if the user only asks you to draft, write, or prepare an email.\nOnly use the Send Message tool when the user explicitly asks you to send the email.\n \nIf the user asks you to send an email but important information is missing, ask for the missing information first.\n \n### Google Calendar - Get All\nUse this tool when the user wants to:\n- Check their calendar.\n- Find an existing event.\n- Check whether they are available.\n- Find events on a specific date.\n- Find events during a specific time period.\n- Check upcoming meetings or appointments.\n \nAlways check the calendar instead of assuming whether a time is available.\n \n### Google Calendar - Create Event\nUse this tool when the user wants to:\n- Schedule a meeting.\n- Create an appointment.\n- Add an event to the calendar.\n- Schedule a reminder/event.\n \nBefore creating an event, make sure you know:\n- Event title\n- Date\n- Start time\n- End time or duration\n \nIf important information is missing, ask the user.\n \nIMPORTANT:\nDo not create a calendar event unless the user clearly asks you to schedule/create/add it.\n \nIf the requested time conflicts with an existing calendar event, inform the user about the conflict before creating the new event.\n \n### Google Search - SerpAPI\nUse Google Search when:\n- The user asks for current/general information that is not available in their emails or calendar.\n- The user explicitly asks you to search Google/the web.\n- You need external information to answer the user's question.\n \nDo not use Google Search when the answer can be obtained from the user's email or calendar.\n \n## Email Rules\n \nWhen the user asks about emails:\n \n1. Understand what email they are looking for.\n2. Use Gmail Get All to find the relevant email.\n3. Summarize the relevant information clearly.\n4. Do not invent email content.\n5. If no matching email is found, tell the user clearly.\n \nWhen writing emails:\n- Be professional.\n- Be clear and concise.\n- Use an appropriate subject.\n- Match the tone requested by the user.\n- Never invent important facts.\n \n## Calendar Rules\n \nWhen the user asks about their schedule:\n \n1. Use Google Calendar Get All.\n2. Check the relevant date/time.\n3. Report existing events accurately.\n4. Never claim that the user is available without checking the calendar.\n \nWhen scheduling:\n1. Collect all required information.\n2. Check the calendar for conflicts.\n3. If there is no conflict, create the event.\n4. Confirm to the user that the event was created.\n \n## Date and Time Rules\n \nAlways pay attention to:\n- Date\n- Day of the week\n- Start time\n- End time\n- Duration\n- Time zone\n \nIf the user says something ambiguous such as:\n\"Schedule a meeting tomorrow afternoon\"\n \nAsk for the exact time before creating the event.\n \nIf the user says:\n\"Schedule a meeting tomorrow at 3 PM\"\n \nUse the current conversation date to determine the correct date.\n \nNever guess an ambiguous date or time.\n \n## Memory Rules\n \nUse conversation memory to remember relevant information already provided by the user.\n \nFor example:\n- Preferred meeting duration\n- Frequently used email recipients\n- Context of an ongoing task\n- Information provided earlier in the conversation\n \nDo not ask the user for information that they have already provided in the current conversation or available memory.\n \n## Confirmation Rules\n \nFor actions that change the user's data or communicate externally:\n \n### Sending an Email\nIf the user explicitly says:\n\"Send this email to John\"\n \nYou may send it after confirming that the required information is complete.\n \nIf the user says:\n\"Write an email to John\"\n \nDraft the email only. Do not send it.\n \n### Creating a Calendar Event\nIf the user explicitly says:\n\"Schedule a meeting with John tomorrow at 3 PM\"\n \nCheck the calendar and create the event if there is no conflict.\n \nIf the user only says:\n\"I want to meet John tomorrow\"\n \nAsk for the required time/details before creating the event.\n \n## Handling Multiple Tasks\n \nIf the user asks for multiple actions in one message, handle them one by one.\n \nFor example:\n \n\"Check my calendar tomorrow and email John if I'm free.\"\n \nYou should:\n1. Check the calendar.\n2. Determine availability.\n3. If the condition is satisfied, prepare/send the email according to the user's request.\n4. Report the result clearly.\n \n## Response Style\n \n- Be friendly, professional, and concise.\n- Answer directly.\n- Do not provide unnecessary explanations.\n- Use short bullet points when listing multiple items.\n- Clearly distinguish between actions you completed and information you found.\n- Never claim that an action was completed unless the corresponding tool successfully completed it.\n \n## Safety and Accuracy\n \n- Never invent emails, calendar events, dates, times, recipients, or search results.\n- Never assume an event exists without checking the calendar.\n- Never assume an email was sent without successfully using the Gmail Send Message tool.\n- Never assume an event was created without successfully using the Calendar Create Event tool.\n- If a tool fails, clearly tell the user that the action could not be completed.\n- Ask for clarification whenever the user's request is ambiguous.\n## airtable rules\n1. Understand what tables they are looking for.\n2. Use airtable to find the relevant info.\n3. Summarize the relevant information clearly.\n4. Do not invent any result on asking for information inside the airtable workspace.\n5. if the user asked for any update go to the selected course and use the update airtable tool\n## Identity\n \nYour name is Alexa.\n \nYou are the user's personal assistant\n \nAlways communicate naturally as Alexa.",
+          "maxIterations": 10
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -432,
+        -576
+      ],
+      "id": "3249693e-7ac3-4b1f-a263-ada9d5673d0a",
+      "name": "project manager agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.message.chat.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        -272,
+        -336
+      ],
+      "id": "eb67a980-55cf-4971-9df5-342318405f37",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 208,
+        "width": 704,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -688,
+        -128
+      ],
+      "typeVersion": 1,
+      "id": "cd12794c-7fe7-46c1-955f-dc50bd4529c2",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 208,
+        "width": 512,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        32,
+        -128
+      ],
+      "typeVersion": 1,
+      "id": "b02615ce-8c88-46c6-95d1-b56be03b00cf",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "\n",
+        "height": 208,
+        "width": 480,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1200,
+        -128
+      ],
+      "typeVersion": 1,
+      "id": "7485e3a2-0428-44d4-b64f-a72300578f4b",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "width": 400,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -512,
+        -368
+      ],
+      "typeVersion": 1,
+      "id": "384f734a-ffa7-4cc3-a47a-6ad0b49a8446",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appvtWrUEik5ex5aA",
+          "mode": "list",
+          "cachedResultName": "amit_courses_n8n",
+          "cachedResultUrl": "https://airtable.com/appvtWrUEik5ex5aA"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbluh7uPggNeZpbSK",
+          "mode": "list",
+          "cachedResultName": "courses",
+          "cachedResultUrl": "https://airtable.com/appvtWrUEik5ex5aA/tbluh7uPggNeZpbSK"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.2,
+      "position": [
+        64,
+        -64
+      ],
+      "id": "5069230e-7c95-436b-90bb-ae70091a95fd",
+      "name": "get courses",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": ,
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appvtWrUEik5ex5aA",
+          "mode": "list",
+          "cachedResultName": "amit_courses_n8n",
+          "cachedResultUrl": "https://airtable.com/appvtWrUEik5ex5aA"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblI4GHSSeEMCYuXl",
+          "mode": "list",
+          "cachedResultName": "instructors",
+          "cachedResultUrl": "https://airtable.com/appvtWrUEik5ex5aA/tblI4GHSSeEMCYuXl"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.2,
+      "position": [
+        240,
+        -64
+      ],
+      "id": "3956cda3-84ba-4598-bfc1-9c72877a8a92",
+      "name": "get instructors",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": ,
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appvtWrUEik5ex5aA",
+          "mode": "list",
+          "cachedResultName": "amit_courses_n8n",
+          "cachedResultUrl": "https://airtable.com/appvtWrUEik5ex5aA"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblwMgpqxtcQjiy6S",
+          "mode": "list",
+          "cachedResultName": "Categories",
+          "cachedResultUrl": "https://airtable.com/appvtWrUEik5ex5aA/tblwMgpqxtcQjiy6S"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.2,
+      "position": [
+        432,
+        -64
+      ],
+      "id": "d3cf65cf-1beb-4189-8cd3-a2b95a09186e",
+      "name": "get Categories",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": ,
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "base": {
+          "__rl": true,
+          "value": "appvtWrUEik5ex5aA",
+          "mode": "list",
+          "cachedResultName": "amit_courses_n8n",
+          "cachedResultUrl": "https://airtable.com/appvtWrUEik5ex5aA"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbluh7uPggNeZpbSK",
+          "mode": "list",
+          "cachedResultName": "courses",
+          "cachedResultUrl": "https://airtable.com/appvtWrUEik5ex5aA/tbluh7uPggNeZpbSK"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Course Name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Course_Name__using_to_match_', ``, 'string') }}",
+            "Course ID": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Course_ID', ``, 'string') }}",
+            "Duration (Weeks)": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Duration__Weeks_', ``, 'number') }}",
+            "Price (USD)": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Price__USD_', ``, 'number') }}",
+            "Topics": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Topics', ``, 'string') }}",
+            "Prerequisites": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Prerequisites', ``, 'string') }}",
+            "Max Capacity": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Max_Capacity', ``, 'number') }}",
+            "Resource Links": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Resource_Links', ``, 'string') }}",
+            "Level": "Advanced"
+          },
+          "matchingColumns": [
+            "Course Name"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Course ID",
+              "displayName": "Course ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Course Name",
+              "displayName": "Course Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Level",
+              "displayName": "Level",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Beginner",
+                  "value": "Beginner"
+                },
+                {
+                  "name": "Intermediate",
+                  "value": "Intermediate"
+                },
+                {
+                  "name": "Advanced",
+                  "value": "Advanced"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Duration (Weeks)",
+              "displayName": "Duration (Weeks)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Price (USD)",
+              "displayName": "Price (USD)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Topics",
+              "displayName": "Topics",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Prerequisites",
+              "displayName": "Prerequisites",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Max Capacity",
+              "displayName": "Max Capacity",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Resource Links",
+              "displayName": "Resource Links",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.2,
+      "position": [
+        -848,
+        -80
+      ],
+      "id": "a3b9fd69-820a-48a0-8d78-6c3e93224e47",
+      "name": "Create or Update courses",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": ,
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "base": {
+          "__rl": true,
+          "value": "appvtWrUEik5ex5aA",
+          "mode": "list",
+          "cachedResultName": "amit_courses_n8n",
+          "cachedResultUrl": "https://airtable.com/appvtWrUEik5ex5aA"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblI4GHSSeEMCYuXl",
+          "mode": "list",
+          "cachedResultName": "instructors",
+          "cachedResultUrl": "https://airtable.com/appvtWrUEik5ex5aA/tblI4GHSSeEMCYuXl"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "Instructor"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Instructor",
+              "displayName": "Instructor",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Assigned_Courses",
+              "displayName": "Assigned_Courses",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Total_Courses",
+              "displayName": "Total_Courses",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.2,
+      "position": [
+        -1008,
+        -80
+      ],
+      "id": "85f394dd-8db8-4439-b526-abea61253369",
+      "name": "Create or Update instructor",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": ,
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "base": {
+          "__rl": true,
+          "value": "appvtWrUEik5ex5aA",
+          "mode": "list",
+          "cachedResultName": "amit_courses_n8n",
+          "cachedResultUrl": "https://airtable.com/appvtWrUEik5ex5aA"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblwMgpqxtcQjiy6S",
+          "mode": "list",
+          "cachedResultName": "Categories",
+          "cachedResultUrl": "https://airtable.com/appvtWrUEik5ex5aA/tblwMgpqxtcQjiy6S"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "Category"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Courses_In_Category",
+              "displayName": "Courses_In_Category",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "options": [
+                {
+                  "name": "AI401",
+                  "value": "AI401"
+                },
+                {
+                  "name": "AI402",
+                  "value": "AI402"
+                },
+                {
+                  "name": "CV203",
+                  "value": "CV203"
+                },
+                {
+                  "name": "DE101",
+                  "value": "DE101"
+                },
+                {
+                  "name": "DS101",
+                  "value": "DS101"
+                },
+                {
+                  "name": "DS102",
+                  "value": "DS102"
+                },
+                {
+                  "name": "DL301",
+                  "value": "DL301"
+                },
+                {
+                  "name": "ML201",
+                  "value": "ML201"
+                },
+                {
+                  "name": "ML202",
+                  "value": "ML202"
+                },
+                {
+                  "name": "NLP202",
+                  "value": "NLP202"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Total_Courses",
+              "displayName": "Total_Courses",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.2,
+      "position": [
+        -1152,
+        -80
+      ],
+      "id": "5e12fd2d-ccab-4428-a54f-baf87577a2f2",
+      "name": "Create or Update category",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": ,
+          "name": "Airtable Personal Access Token account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 5,
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        -656,
+        -80
+      ],
+      "id": "57a35bd1-20da-45f0-8cb6-9fb234303c43",
+      "name": "check emails",
+      "webhookId": "d45884a3-8173-43d4-ac7b-a7dc25642c45",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": ,
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "ali.mo972007@gmail.com",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "emailType": "text",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        -512,
+        -80
+      ],
+      "id": "d01ed0ca-682b-4ce4-a580-305aa433094b",
+      "name": "Send emails",
+      "webhookId": "d45884a3-8173-43d4-ac7b-a7dc25642c45",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": ,
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "ali.mo972007@gmail.com",
+          "mode": "list",
+          "cachedResultName": "ali.mo972007@gmail.com"
+        },
+        "limit": 5,
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -368,
+        -80
+      ],
+      "id": "b0b2b72d-b094-4fbd-8bcf-b71afa664897",
+      "name": "check calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": ,
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "ali.mo972007@gmail.com",
+          "mode": "list",
+          "cachedResultName": "ali.mo972007@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -224,
+        -80
+      ],
+      "id": "fd20ae87-d87e-42ad-a44b-0003b150a453",
+      "name": "Create calendars",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": ,
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "location": "=",
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-serpapi.serpApiTool",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        -80
+      ],
+      "id": "d95bbeec-a1fa-405e-a814-76101c36d66f",
+      "name": "search",
+      "credentials": {
+        "serpApi": {
+          "id": ,
+          "name": "SerpApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.1-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -448,
+        -336
+      ],
+      "id": "6a83dbc8-9358-4f31-968a-3c591f523b81",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": ,
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -672,
+        -672
+      ],
+      "id": "d8173219-70fa-4489-9b28-35a3a68323df",
+      "name": "Telegram Trigger",
+      "webhookId": "348beddd-851c-4a82-9af6-42b54a2a7d5a",
+      "credentials": {
+        "telegramApi": {
+          "id": ,
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.cleanText }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        64,
+        -576
+      ],
+      "id": "23e998c5-e3e2-4fc6-be35-26405bd5dd3d",
+      "name": "Send a text message",
+      "webhookId": "abd0d3c8-341e-4769-a9b0-4ea72b1d658f",
+      "credentials": {
+        "telegramApi": {
+          "id": ,
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "let text = $input.item.json.output || \"\";\n\n// Strips out common markdown formatting symbols\nlet cleanText = String(text).replace(/[*_~`]/g, '');\n\nreturn {\n  json: {\n    ...$input.item.json,\n    cleanText: cleanText\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        -576
+      ],
+      "id": "f6d8ab24-e8d7-43ee-a078-b7bab6abe1a5",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        []
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "project manager agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "project manager agent": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get courses": {
+      "ai_tool": [
+        [
+          {
+            "node": "project manager agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get instructors": {
+      "ai_tool": [
+        [
+          {
+            "node": "project manager agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get Categories": {
+      "ai_tool": [
+        [
+          {
+            "node": "project manager agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create or Update courses": {
+      "ai_tool": [
+        [
+          {
+            "node": "project manager agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create or Update instructor": {
+      "ai_tool": [
+        [
+          {
+            "node": "project manager agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create or Update category": {
+      "ai_tool": [
+        [
+          {
+            "node": "project manager agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check emails": {
+      "ai_tool": [
+        [
+          {
+            "node": "project manager agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send emails": {
+      "ai_tool": [
+        [
+          {
+            "node": "project manager agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "project manager agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create calendars": {
+      "ai_tool": [
+        [
+          {
+            "node": "project manager agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "search": {
+      "ai_tool": [
+        [
+          {
+            "node": "project manager agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "project manager agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "project manager agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "24694576-b469-4de1-8975-a6f84905603e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cbc486019d7f5864fa2261e7e72197c2d56e0efae04e1006e869afe786d5d8dd"
+  },
+  "nodeGroups": [],
+  "id": "ADafVzlO6YkclqAF",
+  "tags": []
+}
